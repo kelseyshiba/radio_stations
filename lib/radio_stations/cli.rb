@@ -24,21 +24,13 @@ class RadioStations
         if input == 'all'
             self.list_stations_by_country
         elsif input == 'list'
-            Radio.my_list.each do |station|
-                puts Rainbow("Station Name: #{station.name}").green
-                puts "Station URL: #{station.url}"
-                puts "Station Country: #{station.country}"
-                puts "Tags: #{station.tags}"
-                puts "Votes: #{station.votes}"
-                puts ""
-            end
-            puts ""
-            puts Rainbow("Nice list!").yellow
-            puts ""
+            Radio.display_my_list
             self.menu
         elsif input == "1"       
             @A_to_F = Radio.cap_countries.filter {|country| country.start_with?("A", "B", "C", "D", "E", "F")}.sort.uniq
             @A_to_F.each_with_index {|country, i| puts "#{i + 1}. #{country}"}
+            # @A_to_F = ["A", "B", "C", "D", "E", "F"]
+            # Radio.countries_that_start_with(@A_to_F)
             self.select_by_letter(@A_to_F)
         elsif input == "2"
             @G_to_L = Radio.cap_countries.filter {|country| country.start_with?("G", "H", "I", "J", "K", "L")}.sort.uniq
@@ -57,39 +49,27 @@ class RadioStations
         end
     end
     
-    def select_by_letter(array) #ROUTE A2 
+    def select_by_letter(array_countries) #ROUTE A2 
         puts ""
         puts Rainbow("Pick a country by number:").yellow
        
         input = gets.strip.to_i
-        until input.between?(1,array.length) 
+        until input.between?(1,array_countries.length) 
             puts Rainbow("Please enter a valid number").red
             input = gets.strip.to_i 
         end
         
-        index = input.to_i - 1
-        i = 1
-        user_choice = Radio.all.select do |station|
-            if station.country == array[index]
-                puts ""
-                puts Rainbow("#{station.name.upcase}").green.bright.underline  
-                puts "#{i}. Station name: #{station.name}" unless station.name == ""
-                puts "   State: #{station.state}" unless station.state == ""
-                puts "   Country Code: #{station.country_code}" unless station.country_code == ""
-                puts "   Tags: #{station.tags}" unless station.tags == ""
-                puts ""
-                i += 1
-            end
-        end
-        self.ask_more_info(user_choice)
+        index = input.to_i - 1 
+        country_choice = array_countries[index]
+        Radio.print_stations_user_choice(country_choice)
+        self.ask_more_info(country_choice)
     end
     #================================================================
     def list_stations_by_country #ROUTE B1
         puts Rainbow("What country's radio stations would you like to explore?").yellow
         sleep(2)
         uniq_countries = Radio.cap_countries.sort {|a,b| a <=> b}.uniq
-        uniq_countries.filter {|country| country !=""}
-        uniq_countries.each_with_index {|country, i| puts "#{i}. #{country}" if country != ""}
+        uniq_countries.filter {|country| country !=""}.each.with_index(1) {|country, i| puts "#{i}. #{country}"}
         self.ask_user_for_country(uniq_countries)
     end
 
@@ -109,7 +89,8 @@ class RadioStations
         self.list_stations_by_selection(user_country_choice)
     end
 
-    def list_stations_by_selection(choice) #ROUTE B3
+    def list_stations_by_selection(choice) #ROUTE B3 #IFs inside of selects
+        #first find the stations by country then we do an iteration to print #class method
         i = 1
         stations_by_country = Radio.all.select do |station| 
             if station.country.split.map(&:capitalize).join(' ') == choice
@@ -179,6 +160,9 @@ class RadioStations
             array.each {|station| station.add_station(station)}
             puts ""
             puts "This station has been added to your list!"
+            puts ""
+            puts ""
+            puts Rainbow("MY LIST").green.underline
             puts ""
             Radio.my_list.each do |station|
                 puts Rainbow("Station Name: #{station.name}").green
