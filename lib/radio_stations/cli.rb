@@ -6,7 +6,7 @@ class RadioStations
         self.menu
     end
 
-    def menu #ALPHATEICAL ROUTE A1 #ADD VIEW LIST?!
+    def menu #ALPHATEICAL ROUTE A1
         puts ""
         puts Rainbow("Please pick a range for the first letter of the country you want to view or type 'all' to see all countries").yellow
         puts Rainbow("Type 'list' to see your saved stations").yellow
@@ -14,11 +14,13 @@ class RadioStations
         puts "----------      ----------      ----------      ----------      ----------      ----------"
         puts Rainbow(" 1. A-F           2. G-L          3.M-R           4. S-Z            ALL            LIST").green
         puts "----------      ----------      ----------      ----------      ----------      ----------"
+        
         input = gets.strip.downcase
-        until input =='all' || input.to_i.between?(1,4) || input == 'list' || input == 'exit'
+        until input == 'all' || input.to_i.between?(1,4) || input == 'list' || input == 'exit'
             puts Rainbow("Please enter a valid input (1-4 or all)").red
             input = gets.strip.downcase
         end
+        
         if input == 'all'
             self.list_stations_by_country
         elsif input == 'list'
@@ -58,11 +60,13 @@ class RadioStations
     def select_by_letter(array) #ROUTE A2 
         puts ""
         puts Rainbow("Pick a country by number:").yellow
+       
         input = gets.strip.to_i
         until input.between?(1,array.length) 
             puts Rainbow("Please enter a valid number").red
             input = gets.strip.to_i 
         end
+        
         index = input.to_i - 1
         i = 1
         user_choice = Radio.all.select do |station|
@@ -75,7 +79,6 @@ class RadioStations
                 puts "   Tags: #{station.tags}" unless station.tags == ""
                 puts ""
                 i += 1
-                # user_choice << station
             end
         end
         self.ask_more_info(user_choice)
@@ -93,22 +96,21 @@ class RadioStations
     def ask_user_for_country(array) #ROUTE B2
         puts ""
         puts Rainbow("Pick a country by entering the number:").yellow
+        
         index = gets.strip.to_i
         until index.between?(1,array.length)
             puts Rainbow("Invalid input. Please select a valid number").red
             index = gets.strip.to_i
         end
+        
         user_country_choice = array[index]
         puts ""
         puts Rainbow("You've selected #{user_country_choice.upcase}!").green
         self.list_stations_by_selection(user_country_choice)
     end
 
-
     def list_stations_by_selection(choice) #ROUTE B3
-        # stations_by_country = []
         i = 1
-
         stations_by_country = Radio.all.select do |station| 
             if station.country.split.map(&:capitalize).join(' ') == choice
                 puts ""
@@ -118,7 +120,6 @@ class RadioStations
                 puts "   Country Code: #{station.country_code}" unless station.country_code == ""
                 puts "   Tags: #{station.tags}" unless station.tags == ""
                 puts ""
-                # stations_by_country << station
                 i += 1
             end
         end
@@ -142,13 +143,12 @@ class RadioStations
     end
 
     def display_more_info(input, array) #ROUTE A4 OR ROUTE B5
-       #array = all radio stations from the country I selected, input is the number I entered
         index = input.to_i - 1
         
         station_choice = [] #this was not working as collect/select?
 
         Radio.all.each do |station| 
-            if station.name == array[index].name
+            if station.object_id == array[index].object_id
                 puts Rainbow("STATION NAME: #{station.name.upcase}").green.underline if station.name !=""
                 puts ""
                 puts "Station URL: #{station.url}" if station.url !="" 
@@ -157,7 +157,6 @@ class RadioStations
                 station_choice << station
             end
         end
-        # station_choice.uniq
         self.ask_four_choices(station_choice.uniq)
     end
 
@@ -167,14 +166,15 @@ class RadioStations
                         Add this station to your list   type: 'add'
                         Start over                      type: 'start'
                         Exit                            type:  'exit'").yellow
+        
         input = gets.strip.downcase
         until input == 'open' || input == 'add' || input == 'start' || input == 'exit'
             puts Rainbow("Please enter a valid input (open, list, start or exit)").red
             input = gets.strip.downcase
         end
+        
         if input == 'open'        
-            url = array.each {|station| station.url}
-            self.open_url(url)
+            array.select {|station| self.open_url(station.url)}
         elsif input == 'add'
             array.each {|station| station.add_station(station)}
             puts ""
@@ -214,43 +214,7 @@ class RadioStations
         elsif input == 'n'
             self.ask_user_select_again
         end
-    end
-#=============================== WISH LIST SECTION =============================
-    # def ask_add_to_my_list
-    #     puts Rainbow("Would you like to add this station to your list? (Y/N)").yellow
-    #     input = gets.strip.downcase
-    #     until input == 'y' || input == 'n'
-    #         puts Rainbow("Please enter Y for yes or N for No").red
-    #         input = gets.strip.downcase
-    #     end
-    #     if input == 'y'
-    #         puts Rainbow("This station has been added to your list!").green
-    #         self.my_list
-    #     elsif input == 'n'
-    #         self.ask_user_select_again
-    #     end
-    # end
-
-    # def my_list(objects_array)
-    #     puts Rainbow("Would you like to view your list? (Y/N)").yellow
-    #     input = gets.strip.downcase
-    #     until input == 'y' || input == 'n'
-    #         puts Rainbow("Please enter a valid input Y for Yes or N for No.").red
-    #         input = gets.strip.downcase
-    #     end
-    #     if input == 'y'
-    #         # self.view_list
-    #         objects_array.sort_by {|station| puts "#{station.name}"}
-    #     elsif input == 'n'
-    #         self.ask_user_select_again
-    #     end
-    # end
-
-    # def view_list
-    #     puts "Here is your list"
-    #     self.ask_user_select_again
-    # end
-    
+    end    
     #================================= USER SELECT AGAIN =======================
 
     def ask_user_select_again      #ROUTE A6 OR B7
