@@ -62,7 +62,9 @@ class RadioStations
         user_countries = Radio.print_station_user_choice(country_choice)
         self.ask_more_info(user_countries) #array of objects
     end
-    #================================================================
+
+    #=======================================ROUTE B =========================
+
     def list_stations_by_country #ROUTE B1
         puts Rainbow("What country's radio stations would you like to explore?").yellow
         sleep(2)
@@ -92,7 +94,9 @@ class RadioStations
         Radio.print_station_user_choice(country_choice)
         self.ask_more_info(matching_countries)
     end
-#========================================================================================
+
+#=============================================BOTH ROUTES===========================================
+
     def ask_more_info(array) #ROUTE A3 OR ROUTE B4 #array of matching countries
         puts Rainbow("Enter the number if you would like more information or type 'back' to start again or type 'exit'.").yellow
         input = gets.strip.downcase
