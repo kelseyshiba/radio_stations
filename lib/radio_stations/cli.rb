@@ -61,8 +61,8 @@ class RadioStations
         
         index = input.to_i - 1 
         country_choice = array_countries[index]
-        Radio.print_stations_user_choice(country_choice)
-        self.ask_more_info(country_choice)
+        user_countries = Radio.print_station_user_choice(country_choice)
+        self.ask_more_info(user_countries) #array of objects
     end
     #================================================================
     def list_stations_by_country #ROUTE B1
@@ -73,7 +73,7 @@ class RadioStations
         self.ask_user_for_country(uniq_countries)
     end
 
-    def ask_user_for_country(array) #ROUTE B2
+    def ask_user_for_country(array) #ROUTE B2 #uniq_countries
         puts ""
         puts Rainbow("Pick a country by entering the number:").yellow
         
@@ -83,31 +83,19 @@ class RadioStations
             index = gets.strip.to_i
         end
         
-        user_country_choice = array[index]
+        country_choice = array[index]
         puts ""
-        puts Rainbow("You've selected #{user_country_choice.upcase}!").green
-        self.list_stations_by_selection(user_country_choice)
+        puts Rainbow("You've selected #{country_choice.upcase}!").green
+        self.list_stations_by_selection(country_choice)
     end
 
-    def list_stations_by_selection(choice) #ROUTE B3 #IFs inside of selects
-        #first find the stations by country then we do an iteration to print #class method
-        i = 1
-        stations_by_country = Radio.all.select do |station| 
-            if station.country.split.map(&:capitalize).join(' ') == choice
-                puts ""
-                puts Rainbow("#{station.name.upcase}").yellow.bright.underline  
-                puts "#{i}. Station name: #{station.name}" unless station.name == ""
-                puts "   State: #{station.state}" unless station.state == ""
-                puts "   Country Code: #{station.country_code}" unless station.country_code == ""
-                puts "   Tags: #{station.tags}" unless station.tags == ""
-                puts ""
-                i += 1
-            end
-        end
-        self.ask_more_info(stations_by_country)
+    def list_stations_by_selection(country_choice) #ROUTE B3 
+        matching_countries = Radio.all.select {|station| station.country == country_choice}
+        Radio.print_station_user_choice(country_choice)
+        self.ask_more_info(matching_countries)
     end
 #========================================================================================
-    def ask_more_info(array) #ROUTE A3 OR ROUTE B4
+    def ask_more_info(array) #ROUTE A3 OR ROUTE B4 #array of matching countries
         puts Rainbow("Enter the number if you would like more information or type 'back' to start again or type 'exit'.").yellow
         input = gets.strip.downcase
         until input == 'back' || input == 'exit' || input.to_i.between?(1, array.length)
@@ -123,10 +111,10 @@ class RadioStations
         end  
     end
 
-    def display_more_info(input, array) #ROUTE A4 OR ROUTE B5
+    def display_more_info(input, array) #ROUTE A4 user_countries array of objects OR ROUTE B5
         index = input.to_i - 1
         
-        station_choice = [] #this was not working as collect/select?
+        station_choice = []
 
         Radio.all.each do |station| 
             if station.object_id == array[index].object_id
@@ -161,18 +149,7 @@ class RadioStations
             puts ""
             puts "This station has been added to your list!"
             puts ""
-            puts ""
-            puts Rainbow("MY LIST").green.underline
-            puts ""
-            Radio.my_list.each do |station|
-                puts Rainbow("Station Name: #{station.name}").green
-                puts "Station URL: #{station.url}"
-                puts "Station Country: #{station.country}"
-                puts "Tags: #{station.tags}"
-                puts "Votes: #{station.votes}"
-                puts ""
-            end
-            puts ""
+            Radio.display_my_list
             self.ask_user_select_again
         elsif input == 'start'
             self.menu

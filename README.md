@@ -1,28 +1,20 @@
-# RadioStations
+# Project Title - RadioStations
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/radio_stations`. To experiment with that code, run `bin/console` for an interactive prompt.
+# Project - Description
 
-TODO: Delete this and the text above, and describe your gem
+This gem is designed to gather information on radio stations worldwide and allow users to sift through the information by giving them options to search by, add to their list, and open the websites of the stations they find.
 
 ## Installation
 
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'radio_stations'
-```
-
-And then execute:
-
+Execute
     $ bundle install
 
-Or install it yourself as:
-
-    $ gem install radio_stations
+Use the command line to run
+ ./bin/radio_stations
 
 ## Usage
 
-TODO: Write usage instructions here
+User menu includes a listing of alphabetical ranges, a list of saved user choices, and an optiona listing of all countries.
 
 ## Development
 
@@ -32,7 +24,7 @@ To install this gem onto your local machine, run `bundle exec rake install`. To 
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/<github username>/radio_stations. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/<github username>/radio_stations/blob/master/CODE_OF_CONDUCT.md).
+Bug reports and pull requests are welcome on GitHub at https://github.com/kelseyshiba/radio_stations. This project is intended to be a safe, welcoming space for collaboration, and contributors are expected to adhere to the [code of conduct](https://github.com/kelseyshiba/radio_stations/blob/master/CODE_OF_CONDUCT.md).
 
 
 ## Code of Conduct
