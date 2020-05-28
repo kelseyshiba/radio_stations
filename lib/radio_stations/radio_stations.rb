@@ -55,24 +55,6 @@ class Radio
         print_array.each_with_index{|country, i| puts "#{i + 1}. #{country}"}
     end
 
-    # def self.print_station_user_choice(country_choice)
-    #     i = 1
-    #     user_countries = []
-    #     self.all.each do |station|
-    #         if country_choice == station.country 
-    #         puts ""
-    #         puts Rainbow("#{station.name.upcase}").green.bright.underline  
-    #         puts "#{i}. Station name: #{station.name}" unless station.name == ""
-    #         puts "   State: #{station.state}" unless station.state == ""
-    #         puts "   Country Code: #{station.country_code}" unless station.country_code == ""
-    #         puts "   Tags: #{station.tags}" unless station.tags == ""
-    #         puts ""
-    #         i += 1
-    #         user_countries << station
-    #         end
-    #     end
-    #     user_countries
-    # end
     def self.print_station_user_choice(country_choice)
         matching_countries = Radio.all.select {|station| station.country == country_choice}
         matching_countries.each.with_index(1) do |station, i|

@@ -29,8 +29,6 @@ class RadioStations
         elsif input == "1"       
             @A_to_F = Radio.cap_countries.filter {|country| country.start_with?("A", "B", "C", "D", "E", "F")}.sort.uniq
             @A_to_F.each_with_index {|country, i| puts "#{i + 1}. #{country}"}
-            # @A_to_F = ["A", "B", "C", "D", "E", "F"]
-            # Radio.countries_that_start_with(@A_to_F)
             self.select_by_letter(@A_to_F)
         elsif input == "2"
             @G_to_L = Radio.cap_countries.filter {|country| country.start_with?("G", "H", "I", "J", "K", "L")}.sort.uniq
