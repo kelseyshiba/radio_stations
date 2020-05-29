@@ -52,7 +52,7 @@ class Radio
     end
 
     # def self.countries_that_start_with(array) # ["A", "B", "C", "D", "E", "F"]
-    #     string = array.join(", ")
+    #     string = array.map(&:inspect).join(",").strip
     #     print_array = self.cap_countries.filter {|country| country.start_with?(string)}.sort.uniq
     #     print_array.each_with_index{|country, i| puts "#{i + 1}. #{country}"}
     # end

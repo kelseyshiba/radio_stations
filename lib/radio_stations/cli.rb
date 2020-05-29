@@ -29,6 +29,8 @@ class RadioStations
         elsif input == "1"       
             @A_to_F = Radio.cap_countries.filter {|country| country.start_with?("A", "B", "C", "D", "E", "F")}.sort.uniq
             @A_to_F.each_with_index {|country, i| puts "#{i + 1}. #{country}"}
+            # array = ["A", "B", "C", "D", "E", "F"]
+            # Radio.countries_that_start_with(array)
             self.select_by_letter(@A_to_F)
         elsif input == "2"
             @G_to_L = Radio.cap_countries.filter {|country| country.start_with?("G", "H", "I", "J", "K", "L")}.sort.uniq
@@ -116,17 +118,14 @@ class RadioStations
     def display_more_info(input, array) #ROUTE A4 user_countries array of objects OR ROUTE B5
         index = input.to_i - 1
         
-        station_choice = []
-
-        Radio.all.each do |station| 
-            if station.object_id == array[index].object_id
+        station_choice = Radio.all.select {|station| station.object_id == array[index].object_id}
+        
+        station_choice.each do |station|
                 puts Rainbow("STATION NAME: #{station.name.upcase}").green.underline if station.name !=""
                 puts ""
                 puts "Station URL: #{station.url}" if station.url !="" 
                 puts "Station votes: #{station.votes}" if station.votes !="" && station.votes != 0 
                 puts ""
-                station_choice << station
-            end
         end
         self.ask_four_choices(station_choice.uniq)
     end
@@ -145,14 +144,14 @@ class RadioStations
         end
         
         if input == 'open'        
-            array.select {|station| self.open_url(station.url)}
+            array.select {|station| self.open_url(station.url, array)}
         elsif input == 'add'
             array.each {|station| station.add_station(station)}
             puts ""
             puts "This station has been added to your list!"
             puts ""
             Radio.display_my_list
-            self.ask_user_select_again
+            self.ask_four_choices(array)
         elsif input == 'start'
             self.menu
         else
@@ -160,7 +159,7 @@ class RadioStations
         end
     end
     
-    def open_url(url) #ROUTE A5 OR ROUTE B6
+    def open_url(url, array) #ROUTE A5 OR ROUTE B6
         puts Rainbow("Would you like to open the website? Y/N").yellow
         input = gets.strip.downcase
         until input == 'n' || input == 'y'
@@ -173,9 +172,11 @@ class RadioStations
                     Launchy.open(station.url)
                 end
             end
-            self.ask_user_select_again
+            # self.ask_user_select_again
+            self.ask_four_choices(array)
         elsif input == 'n'
-            self.ask_user_select_again
+            # self.ask_user_select_again
+            self.ask_four_choices(array)
         end
     end    
     #================================= USER SELECT AGAIN =======================
