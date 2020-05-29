@@ -36,6 +36,7 @@ class Radio
         puts ""
         puts Rainbow("MY LIST").green.underline
         puts ""
+        
         self.my_list.each do |station|
             puts Rainbow("Station Name: #{station.name}").green
             puts "Station URL: #{station.url}"
@@ -44,17 +45,18 @@ class Radio
             puts "Votes: #{station.votes}"
             puts ""
         end
+        
         puts ""
         puts Rainbow("Nice list!").yellow
         puts ""
     end
 
-    def self.countries_that_start_with(array)
-        string = array.join(", ")
-        print_array = self.cap_countries.select {|country| country.start_with?(string)}.sort.uniq
-        print_array.each_with_index{|country, i| puts "#{i + 1}. #{country}"}
-    end
-
+    # def self.countries_that_start_with(array) # ["A", "B", "C", "D", "E", "F"]
+    #     string = array.join(", ")
+    #     print_array = self.cap_countries.filter {|country| country.start_with?(string)}.sort.uniq
+    #     print_array.each_with_index{|country, i| puts "#{i + 1}. #{country}"}
+    # end
+  
     def self.print_station_user_choice(country_choice)
         matching_countries = Radio.all.select {|station| station.country == country_choice}
         matching_countries.each.with_index(1) do |station, i|
