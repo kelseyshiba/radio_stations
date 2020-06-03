@@ -12,6 +12,13 @@ Execute
 Use the command line to run
  ./bin/radio_stations
 
+ require 'launchy'
+ require 'rainbow'
+ require 'open-uri'
+ require 'net/http'
+ require 'json'
+ require 'pry'
+
 ## Usage
 
 User menu includes a listing of alphabetical ranges, a list of saved user choices, and an optiona listing of all countries.

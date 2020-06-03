@@ -139,7 +139,7 @@ class RadioStations
         
         input = gets.strip.downcase
         until input == 'open' || input == 'add' || input == 'start' || input == 'exit'
-            puts Rainbow("Please enter a valid input (open, list, start or exit)").red
+            puts Rainbow("Please enter a valid input (open, add, start or exit)").red
             input = gets.strip.downcase
         end
         
