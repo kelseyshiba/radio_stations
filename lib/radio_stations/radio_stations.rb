@@ -5,8 +5,14 @@ class Radio
     @@all = []
     @@my_list = []
 
-    def initialize(name:)
-        @name = name
+    def initialize(hash)
+        @name = hash["name"]
+        @url = hash["url"]
+        @country = hash["country"]
+        @country_code = hash["country_code"]
+        @state = hash["state"]
+        @votes = hash["votes"]
+        @tags = hash["tags"]
         @@all << self
     end
 
@@ -53,6 +59,7 @@ class Radio
 
     # def self.countries_that_start_with(array) # ["A", "B", "C", "D", "E", "F"]
     #     string = array.map(&:inspect).join(",").strip
+    #     binding.pry
     #     print_array = self.cap_countries.filter {|country| country.start_with?(string)}.sort.uniq
     #     print_array.each_with_index{|country, i| puts "#{i + 1}. #{country}"}
     # end
